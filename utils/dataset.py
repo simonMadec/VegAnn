@@ -60,3 +60,5 @@ class DatasetVSEG(BaseDataset):
     def __len__(self):
         return len(self.metadata)
 
+    def species(self):
+        return self.metadata["Species"].unique().tolist()

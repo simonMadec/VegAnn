@@ -7,7 +7,6 @@ import pytorch_lightning as pl
 import segmentation_models_pytorch as smp
 
 
-
 class VSEGModel(pl.LightningModule):
 
     def __init__(self, arch, encoder_name, in_channels, out_classes, **kwargs):

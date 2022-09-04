@@ -6,10 +6,15 @@ __pycache__/
 # C extensions
 *.so
 
+# results nad log
+results/
+*.csv
+*.png
+lightning_logs/
+
 # Distribution / packaging
 .Python
 build/
-results/
 develop-eggs/
 dist/
 downloads/
