@@ -11,6 +11,11 @@ results/
 *.csv
 *.png
 lightning_logs/
+AllModel/
+mainALL.py
+main_species.py
+main_testspecies.py
+old/
 
 # Distribution / packaging
 .Python

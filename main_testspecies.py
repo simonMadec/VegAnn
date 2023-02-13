@@ -2,15 +2,22 @@ import numpy as np
 import pandas as pd
 from torch.utils.data import DataLoader
 import matplotlib.pyplot as plt
-from utils.dataset import DatasetVSEG
+from utils.dataset import DatasetVegAnn
 import time
-from utils.model import VSEGModel
+from utils.model import VegAnnModel
 import pytorch_lightning as pl
 from random import randrange
 from segmentation_models_pytorch.encoders import get_preprocessing_fn
 from utils.visu import colorTransform_VegGround
+import os
+
+os.environ["CUDA_VISIBLE_DEVICES"]="1"
+
 
 preprocess_input = get_preprocessing_fn('resnet34', pretrained='imagenet')
+
+veganpath = "/home/simon/Project/segmentation/DatasetFinal/VegAnn_dataset"
+
 
 acc = []
 iou = []
@@ -24,8 +31,8 @@ for split in range(1,6):
     print(f"split {split}")
 
     
-    train_dataset = DatasetVSEG(images_dir = "/home/simon/DATA/VSEG/VSEG2308",preprocess = preprocess_input, tvt="Training",split=split)    
-    valid_dataset = DatasetVSEG(images_dir = "/home/simon/DATA/VSEG/VSEG2308", preprocess = preprocess_input,tvt="Validation",split=split)
+    train_dataset = DatasetVegAnn(images_dir = veganpath,preprocess = preprocess_input, tvt="Training",split=split)    
+    valid_dataset = DatasetVegAnn(images_dir = veganpath, preprocess = preprocess_input,tvt="Validation",split=split)
 
     print(f"Train size: {len(train_dataset)}")
     print(f"Valid size: {len(valid_dataset)}")
@@ -49,12 +56,12 @@ for split in range(1,6):
     plt.savefig("1.png")
 
     # initialize model
-    model = VSEGModel("Unet", "resnet34", in_channels=3, out_classes=1)
+    model = VegAnnModel("Unet", "resnet34", in_channels=3, out_classes=1)
 
     # training configuration
     trainer = pl.Trainer(
         gpus=1, 
-        max_epochs=1,
+        max_epochs=15,
         # early_stop_callback=EarlyStopping(monitor="valid_dataset_iou", patience=3, verbose=True, mode="max"),
         log_every_n_steps=1,
     )
@@ -67,9 +74,9 @@ for split in range(1,6):
     )
 
     for spec in train_dataset.species():
-        test_dataset = DatasetVSEG(images_dir = "/home/simon/DATA/VSEG/VSEG2308", preprocess = preprocess_input,tvt="Test",split=split,Species=[spec])
+        test_dataset = DatasetVegAnn(images_dir = veganpath, preprocess = preprocess_input,tvt="Test",split=split,species=[spec])
 
-        if not not test_dataset.species():
+        if test_dataset.species():
             test_dataloader = DataLoader(test_dataset, batch_size=16, shuffle=False,pin_memory=False, num_workers=10) # 8 ok
             # run test dataset on VegAN
             test_metrics = trainer.test(model, dataloaders=test_dataloader, verbose=False)
@@ -98,7 +105,7 @@ for split in range(1,6):
             
 df = pd.DataFrame.from_dict(rows, orient='columns')
 
-dst = f"results_resnet_spec_fullmetrics.csv"
+dst = f"1202_results_resnet_spec_fullmetrics.csv"
 df.to_csv(path_or_buf=str(dst),index=False)
 
 
