@@ -16,6 +16,7 @@ mainALL.py
 main_species.py
 main_testspecies.py
 old/
+main_testspecies*
 
 # Distribution / packaging
 .Python
