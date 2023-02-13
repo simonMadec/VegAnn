@@ -11,8 +11,6 @@
 
 ## 📚 ABSTRACT
 
-SegVeg is a model for semantic segmentation of RGB images into background, green vegetation and senescent vegetation classes.
-Link to iriginal published paper : https://spj.sciencemag.org/journals/plantphenomics/2022/9803570/
 
 ### ⏳ Keypoints
 
