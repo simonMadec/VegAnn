@@ -8,15 +8,15 @@
 
 
 # Table of contents
-1. [Keypoints](#Keypoints)
-1. [Abstract](#📚-Abstract)
+1. [Keypoints](#key)
+1. [Abstract](#abs)
 3. [Citing](#Citing)
 3. [Pytorch Data Loader](#loader)
 3. [Baseline Results](#base)
 
 
 
-## ⏳ Keypoints <a name="Keypoints"></a>
+## ⏳ Keypoints <a name="key"></a>
 
 - Dataset can be found @ https://doi.org/10.5281/zenodo.7636408 
 - VegAnn contains 3775 images 
@@ -26,7 +26,7 @@
 - Different acquisition system and configuration has been used to build VegAnn
 - Check the dataset paper for more information (papier in review stage) @ :
 
-## 📚 Abstract <a name="Abstract"></a>
+## 📚 Abstract <a name="abs"></a>
 
   Applying deep learning to images of cropping systems provides new knowledge and insights in research and commercial applications. Semantic segmentation or pixel-wise classification, of RGB images acquired at the ground level, into vegetation and background is a critical step in the estimation of several canopy traits. Current state of the art methodologies based on convolutional neural networks (CNNs) are trained on datasets acquired under controlled or indoor environments. These models are unable to generalize to real-world images and hence need to be fine-tuned using new labelled datasets. This motivated the creation of the VegAnn - **Veg**etation **Ann**otation - dataset, a collection of 3795 multi-crop RGB images acquired for different phenological stages using different systems and platforms in diverse illumination conditions. We anticipate that VegAnn will help improving segmentation algorithm performances, facilitate benchmarking and promote large-scale crop vegetation segmentation research.
 
