@@ -35,13 +35,14 @@ We provide Python dataloader that load the data as PyTorch tensors. User can sel
 Example use : 
 
 
-'''from segmentation_models_pytorch.encoders import get_preprocessing_fn
-from utils.dataset import DatasetVegAnn
-from torch.utils.data import DataLoader
+```
+    from segmentation_models_pytorch.encoders import get_preprocessing_fn
+    from utils.dataset import DatasetVegAnn
+    from torch.utils.data import DataLoader
 
-train_dataset = DatasetVegAnn(images_dir = veganpath,species = ["Wheat","Maize"], system = ["Handeld Cameras","Phone Camera"], tvt="Training")    
-train_dataloader = DataLoader(train_dataset, batch_size=16, shuffle=True,pin_memory=False, num_workers=10)'''
-
+    train_dataset = DatasetVegAnn(images_dir = veganpath,species = ["Wheat","Maize"], system = ["Handeld Cameras","Phone Camera"], tvt="Training")    
+    train_dataloader = DataLoader(train_dataset, batch_size=16, shuffle=True,pin_memory=False, num_workers=10)
+```
 
 
 ##  📝 Baseline Results <a name="res"></a>
