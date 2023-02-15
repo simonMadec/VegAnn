@@ -31,9 +31,11 @@
   Applying deep learning to images of cropping systems provides new knowledge and insights in research and commercial applications. Semantic segmentation or pixel-wise classification, of RGB images acquired at the ground level, into vegetation and background is a critical step in the estimation of several canopy traits. Current state of the art methodologies based on convolutional neural networks (CNNs) are trained on datasets acquired under controlled or indoor environments. These models are unable to generalize to real-world images and hence need to be fine-tuned using new labelled datasets. This motivated the creation of the VegAnn - **Veg**etation **Ann**otation - dataset, a collection of 3795 multi-crop RGB images acquired for different phenological stages using different systems and platforms in diverse illumination conditions. We anticipate that VegAnn will help improving segmentation algorithm performances, facilitate benchmarking and promote large-scale crop vegetation segmentation research.
 
 ## Pytorch Data Loader <a name="loader"></a>
-We provide Python dataloader that load the data as PyTorch tensors. User can select desired images with the meta information such 
-Example use : 
+We provide Python dataloader that load the data as PyTorch tensors. With the dataloader, users can select desired images with the metadata information such as species, camera system, and training/validation/test sets. 
 
+### Example use : 
+
+Here is an example use case of the dataloader with our custom dataset class:
 
 ```
     from segmentation_models_pytorch.encoders import get_preprocessing_fn
@@ -43,7 +45,7 @@ Example use :
     train_dataset = DatasetVegAnn(images_dir = veganpath,species = ["Wheat","Maize"], system = ["Handeld Cameras","Phone Camera"], tvt="Training")    
     train_dataloader = DataLoader(train_dataset, batch_size=16, shuffle=True,pin_memory=False, num_workers=10)
 ```
-
+By using this dataloader, you can easily load the desired images with metadata information as PyTorch tensors for training, validation, or testing purposes.
 
 ##  📝 Baseline Results <a name="res"></a>
 
