@@ -12,7 +12,7 @@
 4. [Baseline Results](#res)
 5. [Citing](#cite)
 6. [Paper](#paper)
-6. [Meta-Information](#meta)
+7. [Meta-Information](#meta)
 
 ## ⏳ Keypoints <a name="key"></a>
 
@@ -31,7 +31,7 @@
 ## 📦 Pytorch Data Loader <a name="loader"></a>
 We provide Python dataloader that load the data as PyTorch tensors. With the dataloader, users can select desired images with the metadata information such as species, camera system, and training/validation/test sets. 
 
-### Example use : 
+### 🍲 Example use : 
 
 Here is an example use case of the dataloader with our custom dataset class:
 
@@ -45,7 +45,7 @@ Here is an example use case of the dataloader with our custom dataset class:
 ```
 By using this dataloader, you can easily load the desired images with metadata information as PyTorch tensors for training, validation, or testing purposes.
 
-##  📝 Baseline Results <a name="res"></a>
+## 👀 Baseline Results <a name="res"></a>
 
 Metrics are computed at the dataset level for the 5 Test sets of VegAnn
 
@@ -53,7 +53,6 @@ Method               | Encoder | IOU | F1
 ---                  | ---  | ---   | ---                  
 Unet       |   ResNet34  | 89.7 ±1.4  |  94.5 ±0.8
 DeepLabV3  |   ResNet34  | 89.5 ±0.2  |  94.5 ±0.2
-
 
 
 ## 📝 Citing  <a name="cite"></a>
@@ -66,10 +65,8 @@ If you find this dataset useful, please cite:
   url={https://doi.org/10.5281/zenodo.7636408},
   year={2023}
 }
-## Paper <a name="paper"></a>
+## 📖 Paper <a name="paper"></a>
 In review stage
 
-
-## ☸️ How to use
-
-
+## ☸️ Model inference 
+Docker image in construction
