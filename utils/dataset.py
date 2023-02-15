@@ -24,8 +24,10 @@ class DatasetVegAnn(BaseDataset):
         # Filter metadata based on the provided parameters
         if alltvt: 
             self.metadata = df
+            print(f"selec all data")
         else:
             self.metadata = df[df[f"TVT-split{split}"] == tvt]
+            print(f"selec TVT-split{split} = {tvt}")
         
         if species:
             if species[0]=="All":

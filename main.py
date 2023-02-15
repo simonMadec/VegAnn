@@ -5,7 +5,7 @@ from torch.utils.data import DataLoader
 import matplotlib.pyplot as plt
 from utils.dataset import DatasetVegAnn
 import time
-from utils.model import DatasetVegAnn
+from utils.model import VegAnnModel
 import pytorch_lightning as pl
 from random import randrange
 from segmentation_models_pytorch.encoders import get_preprocessing_fn
@@ -44,9 +44,9 @@ for model_ in modelli:
 
         for split in range(1,6):
             print(f"split {split}")
-            train_dataset = DatasetVSEG(images_dir = veganpath,preprocess = preprocess_input, tvt="Training",split=split)    
-            test_dataset = DatasetVSEG(images_dir = veganpath, preprocess = preprocess_input,tvt="Test",split=split)
-            valid_dataset = DatasetVSEG(images_dir = veganpath, preprocess = preprocess_input,tvt="Validation",split=split)    
+            train_dataset = DatasetVegAnn(images_dir = veganpath,preprocess = preprocess_input, tvt="Training",split=split)    
+            test_dataset = DatasetVegAnn(images_dir = veganpath, preprocess = preprocess_input,tvt="Test",split=split)
+            valid_dataset = DatasetVegAnn(images_dir = veganpath, preprocess = preprocess_input,tvt="Validation",split=split)    
             print(f"Train size: {len(train_dataset)}")
             print(f"Test size: {len(test_dataset)}")
             print("loading dataset ..")
@@ -68,7 +68,7 @@ for model_ in modelli:
             plt.savefig("1.png")
 
             # initialize model
-            model = VSEGModel(model_, encoder_, in_channels=3, out_classes=1)
+            model = VegAnnModel(model_, encoder_, in_channels=3, out_classes=1)
 
             # training configuration
             trainer = pl.Trainer(
@@ -97,15 +97,15 @@ for model_ in modelli:
             iou_im.append(test_metrics[0]['test_per_image_iou'])
             f1_im.append(test_metrics[0]['test_per_image_f1'])
 
-            for batch in iter(test_dataloader):
+            # for batch in iter(test_dataloader):
 
-                with torch.no_grad():
-                    model.eval()
-                    logits = model(batch["image"])
-                pr_masks = logits.sigmoid()
+            #     with torch.no_grad():
+            #         model.eval()
+            #         logits = model(batch["image"])
+            #     pr_masks = logits.sigmoid()
             
-                # for image, gt_mask, pr_mask, name, species in zip(batch["image"], batch["mask"], pr_masks, batch["name"], batch["species"]):
-                #     print("do nothing for now")
+            #     # for image, gt_mask, pr_mask, name, species in zip(batch["image"], batch["mask"], pr_masks, batch["name"], batch["species"]):
+            #     #     print("do nothing for now")
 
 
         # results to CSV

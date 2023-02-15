@@ -10,11 +10,13 @@ __pycache__/
 results/
 *.csv
 *.png
+*.JPG
 lightning_logs/
 AllModel/
 mainALL.py
 main_species.py
 main_testspecies.py
+mainsystem*
 old/
 main_testspecies*
 
