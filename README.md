@@ -9,35 +9,53 @@
 
 # Table of contents
 1. [Keypoints](#key)
-1. [Abstract](#abs)
-3. [Citing](#Citing)
+2. [Abstract](#abs)
 3. [Pytorch Data Loader](#loader)
-3. [Baseline Results](#base)
-
-
+4. [Baseline Results](#res)
+5. [Citing](#cite)
+6. [Paper](#paper)
+6. [Meta-Information](#meta)
 
 ## ⏳ Keypoints <a name="key"></a>
 
-- Dataset can be found @ https://doi.org/10.5281/zenodo.7636408 
+- The dataset can be accessed at https://doi.org/10.5281/zenodo.7636408.
 - VegAnn contains 3775 images 
 - Images are 512*512 pixels 
 - Corresponding binary masks is 0 for soil + crop residues (background) 255 for Vegetation (foreground)
-- VegAnn is constituting of 26+ crop species (not represented homogeneously)
-- Different acquisition system and configuration has been used to build VegAnn
-- Check the dataset paper for more information (papier in review stage) @ :
+- The dataset includes images of 26+ crop species, which are not evenly represented
+- VegAnn was constructed using various acquisition systems and configurations
+- For more information about VegAnn, details and potential uses see @
 
 ## 📚 Abstract <a name="abs"></a>
 
   Applying deep learning to images of cropping systems provides new knowledge and insights in research and commercial applications. Semantic segmentation or pixel-wise classification, of RGB images acquired at the ground level, into vegetation and background is a critical step in the estimation of several canopy traits. Current state of the art methodologies based on convolutional neural networks (CNNs) are trained on datasets acquired under controlled or indoor environments. These models are unable to generalize to real-world images and hence need to be fine-tuned using new labelled datasets. This motivated the creation of the VegAnn - **Veg**etation **Ann**otation - dataset, a collection of 3795 multi-crop RGB images acquired for different phenological stages using different systems and platforms in diverse illumination conditions. We anticipate that VegAnn will help improving segmentation algorithm performances, facilitate benchmarking and promote large-scale crop vegetation segmentation research.
 
+#### Pytorch Data Loader <a name="loader"></a>
+We provide Python dataloader that load the data as PyTorch tensors. User can select desired images with the meta information such 
+Example use : 
+
+'''
+from segmentation_models_pytorch.encoders import get_preprocessing_fn
+from utils.dataset import DatasetVegAnn
+from torch.utils.data import DataLoader
+
+train_dataset = DatasetVegAnn(images_dir = veganpath,species = ["Wheat","Maize"], system = ["Handeld Cameras","Phone Camera"], tvt="Training")    
+train_dataloader = DataLoader(train_dataset, batch_size=16, shuffle=True,pin_memory=False, num_workers=10)
+'''
 
 
-## ⏳ Useful information <a name="Useful information"></a>
+##  📝 Baseline Results <a name="res"></a>
 
-##  📝 Baseline Results <a name="base"></a>
-15/02/2023 Dataset is now open
+Metrics are computed at the dataset level for the 5 Test sets of VegAnn
 
-## 📝 Citing
+Method               | Encoder | IOU | F1 
+---                  | ---  | ---   | ---                  
+Unet       |   ResNet34  | 89.7 ±1.4  |  94.5 ±0.8
+DeepLabV3  |   ResNet34  | 89.5 ±0.2  |  94.5 ±0.2
+
+
+
+## 📝 Citing  <a name="cite"></a>
 
 If you find this dataset useful, please cite:
 
@@ -47,7 +65,7 @@ If you find this dataset useful, please cite:
   url={https://doi.org/10.5281/zenodo.7636408},
   year={2023}
 }
-#### Paper <a name="Paper"></a>
+#### Paper <a name="paper"></a>
 In review stage
 
 
