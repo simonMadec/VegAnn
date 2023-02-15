@@ -2,8 +2,7 @@
 
 # VegAnn : Vegetation Annotation of a large multi-crop RGB Dataset acquired under diverse conditions for image semantic segmentation
 
-![logo](https://i.ibb.co/QC6rfCG/2023-02-15-17-01-57-VSEG-Online-La-Te-X-Editor-Overleaf.png)
-
+![logo](https://i.ibb.co/VS0kT0j/forgithub.png)
 # Table of contents
 1. [Keypoints](#key)
 2. [Abstract](#abs)
