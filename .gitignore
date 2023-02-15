@@ -18,8 +18,8 @@ main_species.py
 main_testspecies.py
 mainsystem*
 old/
-main_testspecies*
-
+main_testspecies.py
+maincorrect_visu_error.py
 # Distribution / packaging
 .Python
 build/
