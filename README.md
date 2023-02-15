@@ -3,6 +3,7 @@
 # VegAnn 
 
 ![logo](https://i.ibb.co/VS0kT0j/forgithub.png)
+
 **Vegetation Annotation of a large multi-crop RGB Dataset acquired under diverse conditions for image semantic segmentation**
 
 # Table of contents
