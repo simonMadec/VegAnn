@@ -30,7 +30,7 @@
 
   Applying deep learning to images of cropping systems provides new knowledge and insights in research and commercial applications. Semantic segmentation or pixel-wise classification, of RGB images acquired at the ground level, into vegetation and background is a critical step in the estimation of several canopy traits. Current state of the art methodologies based on convolutional neural networks (CNNs) are trained on datasets acquired under controlled or indoor environments. These models are unable to generalize to real-world images and hence need to be fine-tuned using new labelled datasets. This motivated the creation of the VegAnn - **Veg**etation **Ann**otation - dataset, a collection of 3795 multi-crop RGB images acquired for different phenological stages using different systems and platforms in diverse illumination conditions. We anticipate that VegAnn will help improving segmentation algorithm performances, facilitate benchmarking and promote large-scale crop vegetation segmentation research.
 
-## Pytorch Data Loader <a name="loader"></a>
+## 📦 Pytorch Data Loader <a name="loader"></a>
 We provide Python dataloader that load the data as PyTorch tensors. With the dataloader, users can select desired images with the metadata information such as species, camera system, and training/validation/test sets. 
 
 ### Example use : 
@@ -68,9 +68,10 @@ If you find this dataset useful, please cite:
   url={https://doi.org/10.5281/zenodo.7636408},
   year={2023}
 }
-#### Paper <a name="paper"></a>
+## Paper <a name="paper"></a>
 In review stage
 
 
 ## ☸️ How to use
+
 
