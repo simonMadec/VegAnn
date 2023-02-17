@@ -22,8 +22,8 @@
 - Images are 512*512 pixels 
 - Corresponding binary masks is 0 for soil + crop residues (background) 255 for Vegetation (foreground)
 - The dataset includes images of 26+ crop species, which are not evenly represented
-- VegAnn was constructed using various acquisition systems and configurations
-- For more information about VegAnn, details and potential uses see @
+- VegAnn was compiled using a variety of outdoor images captured with different acquisition systems and configurations
+- For more information about VegAnn, details, labeling rules and potential uses see @paper
 
 ## 📚 Abstract <a name="abs"></a>
 
@@ -44,7 +44,7 @@ Here is an example use case of the dataloader with our custom dataset class:
     train_dataset = DatasetVegAnn(images_dir = veganpath,species = ["Wheat","Maize"], system = ["Handeld Cameras","Phone Camera"], tvt="Training")    
     train_dataloader = DataLoader(train_dataset, batch_size=16, shuffle=True,pin_memory=False, num_workers=10)
 ```
-By using this dataloader, you can easily load the desired images with metadata information as PyTorch tensors for training, validation, or testing purposes.
+By using this dataloader, you can easily load the desired images as PyTorch tensors see utils/dataset.py for more details.
 
 ## 👀 Baseline Results <a name="res"></a>
 
