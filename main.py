@@ -1,3 +1,4 @@
+import argparse
 import os
 import shutil
 import time
@@ -11,6 +12,7 @@ import pandas as pd
 import pytorch_lightning as pl
 import torch
 from PIL import Image
+from pytorch_lightning.strategies.ddp import DDPStrategy
 from segmentation_models_pytorch.encoders import get_preprocessing_fn
 from torch.utils.data import DataLoader
 
@@ -19,8 +21,18 @@ from utils.model import VegAnnModel
 from utils.visu import colorTransform_VegGround
 
 
-def main():
-    visupath = "results/visu"
+def get_args():
+    parser = argparse.ArgumentParser(description='VegAnn')
+
+    parser.add_argument('--devices', type=int, default=1, help='devices number')
+    parser.add_argument('--precision', type=str, default='medium', help='precision')
+
+    args = parser.parse_args()
+    return args
+
+
+def main(args) -> None:
+    visupath = "./results/visu"
     veganpath = "./VegAnn_dataset"
 
     for files in os.listdir(visupath):
@@ -33,7 +45,6 @@ def main():
     modelli = ["DeepLabV3","Unet"]
     encoderli = ["resnet34","resnet50"]
 
-    torch.set_float32_matmul_precision('medium')
     for model_ in modelli:
         for encoder_ in encoderli:
             preprocess_input = get_preprocessing_fn(encoder_, pretrained='imagenet')
@@ -74,12 +85,12 @@ def main():
 
                 # training configuration
                 trainer = pl.Trainer(
-                    # gpus=3,
                     accelerator='gpu',
-                    devices=[0, 2, 3],
+                    devices=args.devices,
                     max_epochs=15,
                     # early_stop_callback=EarlyStopping(monitor="valid_dataset_iou", patience=3, verbose=True, mode="max"),
                     log_every_n_steps=1,
+                    strategy=DDPStrategy(find_unused_parameters=False),
                 )
 
                 # data loaders
@@ -123,4 +134,8 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    args = get_args()
+
+    torch.set_float32_matmul_precision(args.precision)
+
+    main(args)

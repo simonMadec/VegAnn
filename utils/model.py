@@ -111,7 +111,7 @@ class VegAnnModel(pl.LightningModule):
             f"{stage}_dataset_acc": dataset_acc,
         }
         
-        self.log_dict(metrics, prog_bar=True)
+        self.log_dict(metrics, prog_bar=True, sync_dist=True)
 
     def training_step(self, batch, batch_idx):
         return self.shared_step(batch, "train")            
