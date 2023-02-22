@@ -26,6 +26,7 @@ def get_args():
 
     parser.add_argument('--devices', type=int, default=1, help='devices number')
     parser.add_argument('--precision', type=str, default='medium', help='precision')
+    parser.add_argument('--continue-training', action='store_false', help='continue training')
 
     args = parser.parse_args()
     return args
@@ -71,14 +72,15 @@ def main(args) -> None:
                 start_time = time.time()
                 first = 0
 
-                # save 1 png image to check annotation 
-                sample = train_dataset[randrange(len(train_dataset))]
-                plt.subplot(1,2,1)
-                plt.imshow(sample["image"].transpose(1, 2, 0)) # for visualization we have to transpose back to HWC
-                plt.subplot(1,2,2)
-                plt.imshow(sample["mask"].squeeze())  # for visualization we have to remove 3rd dimension of mask
-                plt.show()
-                plt.savefig("1.png")
+                if args.continue_training:
+                    # save 1 png image to check annotation 
+                    sample = train_dataset[randrange(len(train_dataset))]
+                    plt.subplot(1,2,1)
+                    plt.imshow(sample["image"].transpose(1, 2, 0)) # for visualization we have to transpose back to HWC
+                    plt.subplot(1,2,2)
+                    plt.imshow(sample["mask"].squeeze())  # for visualization we have to remove 3rd dimension of mask
+                    plt.show()
+                    plt.savefig("1.png")
 
                 # initialize model
                 model = VegAnnModel(model_, encoder_, in_channels=3, out_classes=1)
@@ -91,6 +93,7 @@ def main(args) -> None:
                     # early_stop_callback=EarlyStopping(monitor="valid_dataset_iou", patience=3, verbose=True, mode="max"),
                     log_every_n_steps=1,
                     strategy=DDPStrategy(find_unused_parameters=False),
+                    auto_scale_batch_size=True,
                 )
 
                 # data loaders
@@ -101,7 +104,11 @@ def main(args) -> None:
                 )
 
                 # run test dataset on VegAN
-                test_metrics = trainer.test(model, dataloaders=test_dataloader, verbose=False)
+                test_metrics = trainer.test(
+                    model, 
+                    dataloaders=test_dataloader, 
+                    verbose=False,
+                )
                 
                 # store Accuracy and IOU
                 acc.append(test_metrics[0]['test_dataset_acc'])
