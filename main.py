@@ -26,6 +26,9 @@ def get_args():
 
     parser.add_argument('--devices', type=int, default=1, help='devices number')
     parser.add_argument('--precision', type=str, default='medium', help='precision')
+
+    parser.add_argument('--train-batch-size', type=int, default=16, help='train batch size')
+
     parser.add_argument('--continue-training', action='store_false', help='continue training')
 
     args = parser.parse_args()
@@ -58,22 +61,29 @@ def main(args) -> None:
 
             for split in range(1,6):
                 print(f"split {split}")
-                train_dataset = DatasetVegAnn(images_dir = veganpath,preprocess = preprocess_input, tvt="Training",split=split)    
-                test_dataset = DatasetVegAnn(images_dir = veganpath, preprocess = preprocess_input,tvt="Test",split=split)
-                valid_dataset = DatasetVegAnn(images_dir = veganpath, preprocess = preprocess_input,tvt="Validation",split=split)    
+                train_dataset = DatasetVegAnn(images_dir=veganpath, preprocess=preprocess_input, tvt="Training", split=split)
+                test_dataset = DatasetVegAnn(images_dir=veganpath, preprocess=preprocess_input, tvt="Test", split=split)
+                valid_dataset = DatasetVegAnn(images_dir=veganpath, preprocess=preprocess_input, tvt="Validation", split=split)
                 print(f"Train size: {len(train_dataset)}")
                 print(f"Test size: {len(test_dataset)}")
                 print("loading dataset ..")
-                train_dataloader = DataLoader(train_dataset, batch_size=16, shuffle=True,pin_memory=False, num_workers=10) # 8 ok
-                valid_dataloader = DataLoader(valid_dataset, batch_size=16, shuffle=False,pin_memory=False, num_workers=10) # 8 ok
-                test_dataloader = DataLoader(test_dataset, batch_size=16, shuffle=False,pin_memory=False, num_workers=10) # 8 ok
+                train_dataloader = DataLoader(
+                    train_dataset,
+                    batch_size=args.train_batch_size,
+                    shuffle=True,
+                    pin_memory=False,
+                    num_workers=8,
+                    persistent_workers=True
+                ) # 8 ok
+                valid_dataloader = DataLoader(valid_dataset, batch_size=16, shuffle=False,pin_memory=False, num_workers=8) # 8 ok
+                test_dataloader = DataLoader(test_dataset, batch_size=16, shuffle=False,pin_memory=False, num_workers=8) # 8 ok
                 print("finish dataset ..")
 
                 start_time = time.time()
                 first = 0
 
                 if args.continue_training:
-                    # save 1 png image to check annotation 
+                    # save 1 png image to check annotation
                     sample = train_dataset[randrange(len(train_dataset))]
                     plt.subplot(1,2,1)
                     plt.imshow(sample["image"].transpose(1, 2, 0)) # for visualization we have to transpose back to HWC
@@ -93,23 +103,22 @@ def main(args) -> None:
                     # early_stop_callback=EarlyStopping(monitor="valid_dataset_iou", patience=3, verbose=True, mode="max"),
                     log_every_n_steps=1,
                     strategy=DDPStrategy(find_unused_parameters=False),
-                    auto_scale_batch_size=True,
                 )
 
                 # data loaders
                 trainer.fit(
-                    model, 
-                    train_dataloaders=train_dataloader, 
+                    model,
+                    train_dataloaders=train_dataloader,
                     val_dataloaders=valid_dataloader,
                 )
 
                 # run test dataset on VegAN
                 test_metrics = trainer.test(
-                    model, 
-                    dataloaders=test_dataloader, 
+                    model,
+                    dataloaders=test_dataloader,
                     verbose=False,
                 )
-                
+
                 # store Accuracy and IOU
                 acc.append(test_metrics[0]['test_dataset_acc'])
                 iou.append(test_metrics[0]['test_dataset_iou'])
@@ -125,7 +134,7 @@ def main(args) -> None:
                 #         model.eval()
                 #         logits = model(batch["image"])
                 #     pr_masks = logits.sigmoid()
-                
+
                 #     # for image, gt_mask, pr_mask, name, species in zip(batch["image"], batch["mask"], pr_masks, batch["name"], batch["species"]):
                 #     #     print("do nothing for now")
 
@@ -133,7 +142,7 @@ def main(args) -> None:
             # results to CSV
             dd = {"OA-dt":[np.mean(acc)],"IOU-dt":[np.mean(iou)],"f1-dt":[np.mean(f1)],"OA-dt_std":[np.std(acc)],"IOU-dt_std":[np.std(iou)],"f1-dt_std":[np.std(f1)],
                 "OA-im":[np.mean(acc_im)],"IOU-im":[np.mean(iou_im)],"f1-im":[np.mean(f1_im)],"OA-im_std":[np.std(acc_im)],"IOU-im_std":[np.std(iou_im)],"f1-im_std":[np.std(f1_im)]}
-                
+
             df = pd.DataFrame(data=dd)
 
             dst = f"results_{model_}_{encoder_}_fullmetrics.csv"
