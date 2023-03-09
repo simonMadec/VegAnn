@@ -14,6 +14,9 @@
 5. [Citing](#cite)
 6. [Paper](#paper)
 7. [Meta-Information](#meta)
+8. [Model inference](#model)
+9. [Licence](#licence)
+10. [Credits](#credits)
 
 ## ⏳ Keypoints <a name="key"></a>
 
@@ -69,14 +72,15 @@ If you find this dataset useful, please cite:
 ## 📖 Paper <a name="paper"></a>
 In review stage
 
-## ☸️ Model inference 
+## ☸️ Model inference <a name="model"></a>
+Model weights soon available
 Docker image in construction
 
-## ☸️ Licence <a name="licence"></a>
+##  📑Licence <a name="licence"></a>
 The dataset is under the CC-BY licence. 
 This repository is under the MIT licence
 
-## ☸️ Credits <a name="credits"></a>
+## 👫 Credits <a name="credits"></a>
 This work was supported by the projects Phenome-ANR-11-INBS-0012, P2S2-CNES-TOSCA-4500066524, GRDC UOQ2002-08RTX, GRDC UOQ2003-011RTX, JST AIP Acceleration Research JPMJCR21U3 and French Ministry of Agriculture and food (LITERAL CASDAR project).  
 
 We thank all the people involved in the labelling review also including F.Venault, M. Debroux, G. Studer 
