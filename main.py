@@ -1,17 +1,17 @@
 import logging
-from typing import List, Dict
 from pathlib import Path
+from typing import Dict, List
 
 import numpy as np
 import pandas as pd
 from omegaconf import OmegaConf
+
 from vegann.trainer import VeganTrainer
 
 logger = logging.getLogger(__name__)
 
 
 def metrics_to_csv(split_metrics: List[Dict], out_path: str):
-    
     acc, iou, f1, acc_im, iou_im, f1_im = [], [], [], [], [], []
 
     for test_metrics in split_metrics:
@@ -44,15 +44,18 @@ def metrics_to_csv(split_metrics: List[Dict], out_path: str):
 
     df.to_csv(path_or_buf=str(out_path), index=False)
 
+
 def main(config_path: str):
     config = OmegaConf.load(config_path)
 
     n_split = config.dataset.n_split
     split_metrics = []
-    
+
     for split_id in range(1, n_split + 1):
         # initialize vegantrainer
-        Vtrainer = VeganTrainer(config=config, expt_dir=Path(config.expt_dir) / f"split_{split_id}")
+        Vtrainer = VeganTrainer(
+            config=config, expt_dir=Path(config.expt_dir) / f"split_{split_id}"
+        )
         Vtrainer.setup_dataloaders(split_id=split_id)
 
         logger.info(f"Train size: {len(Vtrainer.train_dataset)}")
@@ -65,8 +68,11 @@ def main(config_path: str):
         # get test metrics
         test_metrics = Vtrainer.test()
         split_metrics.append(test_metrics)
-        
-    out_path = Path(config.expt_dir) / f"results_{Vtrainer.model_}_{Vtrainer.encoder_}_fullmetrics.csv"
+
+    out_path = (
+        Path(config.expt_dir)
+        / f"results_{Vtrainer.model_}_{Vtrainer.encoder_}_fullmetrics.csv"
+    )
     metrics_to_csv(split_metrics, out_path=out_path)
 
 

@@ -1,16 +1,15 @@
-import pandas as pd
-from pathlib import Path
-from geojson import Point, Feature, FeatureCollection, dump
-import pandas as pd
-import numpy as np
-from pathlib import Path
-import shutil
-import os
 import datetime
-import random
-from skimage.io import imread
-from PIL import Image
 import glob
+import os
+import random
+import shutil
+from pathlib import Path
+
+import numpy as np
+import pandas as pd
+from geojson import Feature, FeatureCollection, Point, dump
+from PIL import Image
+from skimage.io import imread
 
 
 def colorTransform_VegGround(

@@ -1,9 +1,10 @@
-from torch.utils.data import Dataset as BaseDataset
+from pathlib import Path
+
+import cv2
 import numpy as np
 import pandas as pd
-import cv2
-from pathlib import Path
 from segmentation_models_pytorch.encoders import get_preprocessing_fn
+from torch.utils.data import Dataset as BaseDataset
 
 
 class DatasetVegAnn(BaseDataset):

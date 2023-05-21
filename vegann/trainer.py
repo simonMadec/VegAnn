@@ -1,15 +1,14 @@
-from omegaconf.dictconfig import DictConfig
-from typing import Dict
-from dataclasses import dataclass
 import logging
+from dataclasses import dataclass
+from typing import Dict
 
 import numpy as np
-from torch.utils.data import DataLoader
 import pytorch_lightning as pl
-from pytorch_lightning.strategies.ddp import DDPStrategy
+from omegaconf.dictconfig import DictConfig
 from pytorch_lightning.callbacks import ModelCheckpoint
-
+from pytorch_lightning.strategies.ddp import DDPStrategy
 from segmentation_models_pytorch.encoders import get_preprocessing_fn
+from torch.utils.data import DataLoader
 
 from vegann.utils.vegan_dataset import DatasetVegAnn
 from vegann.utils.vegan_model import VegAnnModel
@@ -31,26 +30,39 @@ class VeganTrainer:
         self.pretrained = self.modelconf.pretrained
         self.model_ = self.modelconf.name
 
-        self.preprocess_input = get_preprocessing_fn(self.encoder_, pretrained=self.pretrained)
-        self.model = VegAnnModel(self.model_, self.encoder_, in_channels=3, out_classes=1)
+        self.preprocess_input = get_preprocessing_fn(
+            self.encoder_, pretrained=self.pretrained
+        )
+        self.model = VegAnnModel(
+            self.model_, self.encoder_, in_channels=3, out_classes=1
+        )
         self.checkpoint_callback = ModelCheckpoint(
             dirpath=self.expt_dir,
             filename="vegann-{epoch:02d}",
             monitor="valid_dataset_acc",
-            every_n_epochs=self.trainconf.every_n_epochs
+            every_n_epochs=self.trainconf.every_n_epochs,
         )
 
     def setup_dataloaders(self, split_id: int) -> None:
         veganpath = self.config.dataset.VegAnn_path
 
         self.train_dataset = DatasetVegAnn(
-            images_dir=veganpath, preprocess=self.preprocess_input, tvt="Training", split=split_id
+            images_dir=veganpath,
+            preprocess=self.preprocess_input,
+            tvt="Training",
+            split=split_id,
         )
         self.test_dataset = DatasetVegAnn(
-            images_dir=veganpath, preprocess=self.preprocess_input, tvt="Test", split=split_id
+            images_dir=veganpath,
+            preprocess=self.preprocess_input,
+            tvt="Test",
+            split=split_id,
         )
         self.valid_dataset = DatasetVegAnn(
-            images_dir=veganpath, preprocess=self.preprocess_input, tvt="Validation", split=split_id
+            images_dir=veganpath,
+            preprocess=self.preprocess_input,
+            tvt="Validation",
+            split=split_id,
         )
 
         self.train_dataloader = DataLoader(
@@ -70,7 +82,11 @@ class VeganTrainer:
         )
 
         self.test_dataloader = DataLoader(
-            self.test_dataset, batch_size=16, shuffle=False, pin_memory=False, num_workers=8
+            self.test_dataset,
+            batch_size=16,
+            shuffle=False,
+            pin_memory=False,
+            num_workers=8,
         )  # 8 ok
 
     def train(self):
@@ -85,7 +101,7 @@ class VeganTrainer:
             strategy=DDPStrategy(find_unused_parameters=False),
             limit_val_batches=self.trainconf.limit_val_batches,
             limit_train_batches=self.trainconf.limit_train_batches,
-            limit_test_batches=self.trainconf.limit_test_batches
+            limit_test_batches=self.trainconf.limit_test_batches,
         )
 
         # data loaders

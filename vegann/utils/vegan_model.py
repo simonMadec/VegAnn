@@ -1,11 +1,12 @@
-import torch
+from typing import Dict, List
 
 import pytorch_lightning as pl
 import segmentation_models_pytorch as smp
+import torch
 
 
 class VegAnnModel(pl.LightningModule):
-    def __init__(self, arch, encoder_name, in_channels, out_classes, **kwargs):
+    def __init__(self, arch: str, encoder_name: str, in_channels: int, out_classes: int, **kwargs):
         super().__init__()
         self.model = smp.create_model(
             arch,
@@ -24,13 +25,13 @@ class VegAnnModel(pl.LightningModule):
         self.loss_fn = smp.losses.DiceLoss(smp.losses.BINARY_MODE, from_logits=True)
         self.train_outputs, self.val_outputs, self.test_outputs = [], [], []
 
-    def forward(self, image):
+    def forward(self, image: torch.Tensor):
         # normalize image here #todo
         image = (image - self.mean) / self.std
         mask = self.model(image)
         return mask
 
-    def shared_step(self, batch, stage):
+    def shared_step(self, batch: Dict, stage: str):
         image = batch["image"]
 
         # Shape of the image should be (batch_size, num_channels, height, width)
@@ -71,9 +72,7 @@ class VegAnnModel(pl.LightningModule):
         # but for now we just compute true positive, false positive, false negative and
         # true negative 'pixels' for each image and class
         # these values will be aggregated in the end of an epoch
-        tp, fp, fn, tn = smp.metrics.get_stats(
-            pred_mask.long(), mask.long(), mode="binary"
-        )
+        tp, fp, fn, tn = smp.metrics.get_stats(pred_mask.long(), mask.long(), mode="binary")
 
         return {
             "loss": loss,
@@ -83,7 +82,7 @@ class VegAnnModel(pl.LightningModule):
             "tn": tn,
         }
 
-    def shared_epoch_end(self, outputs, stage):
+    def shared_epoch_end(self, outputs: List[Dict], stage: str):
         # aggregate step metics
         tp = torch.cat([x["tp"] for x in outputs])
         fp = torch.cat([x["fp"] for x in outputs])
@@ -92,13 +91,9 @@ class VegAnnModel(pl.LightningModule):
 
         # per image IoU means that we first calculate IoU score for each image
         # and then compute mean over these scores
-        per_image_iou = smp.metrics.iou_score(
-            tp, fp, fn, tn, reduction="micro-imagewise"
-        )
+        per_image_iou = smp.metrics.iou_score(tp, fp, fn, tn, reduction="micro-imagewise")
         per_image_f1 = smp.metrics.f1_score(tp, fp, fn, tn, reduction="micro-imagewise")
-        per_image_acc = smp.metrics.accuracy(
-            tp, fp, fn, tn, reduction="micro-imagewise"
-        )
+        per_image_acc = smp.metrics.accuracy(tp, fp, fn, tn, reduction="micro-imagewise")
         # dataset IoU means that we aggregate intersection and union over whole dataset
         # and then compute IoU score. The difference between dataset_iou and per_image_iou scores
         # in this particular case will not be much, however for dataset
@@ -119,7 +114,7 @@ class VegAnnModel(pl.LightningModule):
 
         self.log_dict(metrics, prog_bar=True, sync_dist=True, rank_zero_only=True)
 
-    def training_step(self, batch, batch_idx):
+    def training_step(self, batch: Dict, batch_idx: int):
         step_outputs = self.shared_step(batch, "train")
         self.train_outputs.append(step_outputs)
         return step_outputs
@@ -128,7 +123,7 @@ class VegAnnModel(pl.LightningModule):
         self.shared_epoch_end(self.train_outputs, "train")
         self.train_outputs = []
 
-    def validation_step(self, batch, batch_idx):
+    def validation_step(self, batch: Dict, batch_idx: int):
         step_outputs = self.shared_step(batch, "valid")
         self.val_outputs.append(step_outputs)
         return step_outputs
@@ -137,7 +132,7 @@ class VegAnnModel(pl.LightningModule):
         self.shared_epoch_end(self.val_outputs, "valid")
         self.val_outputs = []
 
-    def test_step(self, batch, batch_idx):
+    def test_step(self, batch: Dict, batch_idx: int):
         step_outputs = self.shared_step(batch, "test")
         self.test_outputs.append(step_outputs)
         return step_outputs
