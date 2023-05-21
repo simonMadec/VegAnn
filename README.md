@@ -26,7 +26,7 @@
 - Corresponding binary masks is 0 for soil + crop residues (background) 255 for Vegetation (foreground)
 - The dataset includes images of 26+ crop species, which are not evenly represented
 - VegAnn was compiled using a variety of outdoor images captured with different acquisition systems and configurations
-- For more information about VegAnn, details, labeling rules and potential uses see @paper
+- For more information about VegAnn, details, labeling rules and potential uses see https://doi.org/10.1038/s41597-023-02098-y
 
 ## 📚 Abstract <a name="abs"></a>
 
