@@ -1,8 +1,7 @@
 
 
 # VegAnn 
-
-![logo](https://i.ibb.co/VS0kT0j/forgithub.png)
+![Alt text](images/vegann-logo.png "Vegann-logo")
 
 ### **Vegetation Annotation of a large multi-crop RGB Dataset acquired under diverse conditions for image semantic segmentation**
 
