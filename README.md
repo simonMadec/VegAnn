@@ -70,7 +70,7 @@ If you find this dataset useful, please cite:
   year={2023}
 }
 ## 📖 Paper <a name="paper"></a>
-In review stage
+https://doi.org/10.1038/s41597-023-02098-y
 
 ## ☸️ Model inference <a name="model"></a>
 Model weights soon available
