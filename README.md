@@ -8,14 +8,15 @@
 # Table of contents
 1. [Keypoints](#key)
 2. [Abstract](#abs)
-3. [Pytorch Data Loader](#loader)
-4. [Baseline Results](#res)
-5. [Citing](#cite)
-6. [Paper](#paper)
-7. [Meta-Information](#meta)
-8. [Model inference](#model)
-9. [Licence](#licence)
-10. [Credits](#credits)
+3. [DIY with Google Colab](#colab)
+4. [Pytorch Data Loader](#loader)
+5. [Baseline Results](#res)
+6. [Citing](#cite)
+7. [Paper](#paper)
+8. [Meta-Information](#meta)
+9. [Model inference](#model)
+10. [Licence](#licence)
+11. [Credits](#credits)
 
 ## ⏳ Keypoints <a name="key"></a>
 
@@ -30,6 +31,10 @@
 ## 📚 Abstract <a name="abs"></a>
 
   Applying deep learning to images of cropping systems provides new knowledge and insights in research and commercial applications. Semantic segmentation or pixel-wise classification, of RGB images acquired at the ground level, into vegetation and background is a critical step in the estimation of several canopy traits. Current state of the art methodologies based on convolutional neural networks (CNNs) are trained on datasets acquired under controlled or indoor environments. These models are unable to generalize to real-world images and hence need to be fine-tuned using new labelled datasets. This motivated the creation of the VegAnn - **Veg**etation **Ann**otation - dataset, a collection of 3795 multi-crop RGB images acquired for different phenological stages using different systems and platforms in diverse illumination conditions. We anticipate that VegAnn will help improving segmentation algorithm performances, facilitate benchmarking and promote large-scale crop vegetation segmentation research.
+
+## Google Colab <a name="colab"></a>
+Example code for VegAnn (Unet) inference here : https://t.co/LkI1esLzqu
+ 
 
 ## 📦 Pytorch Data Loader <a name="loader"></a>
 We provide Python dataloader that load the data as PyTorch tensors. With the dataloader, users can select desired images with the metadata information such as species, camera system, and training/validation/test sets. 
@@ -72,8 +77,8 @@ If you find this dataset useful, please cite:
 https://doi.org/10.1038/s41597-023-02098-y
 
 ## ☸️ Model inference <a name="model"></a>
-Model weights soon available
-Docker image in construction
+Model weights here : https://drive.google.com/uc?id=1azagsinfW4btSGaTi0XJKsRnFR85Gtaw (Unet, resnet34 weights initialized on Imagenet fine-tunned on Vegan
+Docker image in construction, please open an issue or request for any feature request
 
 ##  📑Licence <a name="licence"></a>
 The dataset is under the CC-BY licence. 
