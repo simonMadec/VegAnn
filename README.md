@@ -77,8 +77,8 @@ If you find this dataset useful, please cite:
 https://doi.org/10.1038/s41597-023-02098-y
 
 ## ☸️ Model inference <a name="model"></a>
-Model weights here : https://drive.google.com/uc?id=1azagsinfW4btSGaTi0XJKsRnFR85Gtaw (Unet, resnet34 weights initialized on Imagenet fine-tunned on Vegan
-Docker image in construction, please open an issue or request for any feature request
+Model weights here : https://drive.google.com/uc?id=1azagsinfW4btSGaTi0XJKsRnFR85Gtaw (Unet, resnet34 weights initialized on Imagenet fine-tunned on Vegan)
+Please open an issue or request for any feature request
 
 ##  📑Licence <a name="licence"></a>
 The dataset is under the CC-BY licence. 
