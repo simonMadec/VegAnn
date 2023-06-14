@@ -11,12 +11,12 @@ class DatasetVegAnn(BaseDataset):
     def __init__(
         self,
         images_dir: str,
-        tvt: str = "Training",  # Training Validation or Test
-        split: int = 1,  # Specify the split use for training validation or test (integer between 1 or 5)
-        species: list = [],  # Species to include in the dataset
+        tvt: str = "Training",  # Specify which set of images (TVT-split) to select (options: "Training" "Validation" or "Test")
+        split: int = 1,  # Specify the split use for Training Validation or Test (integer between 1 or 5)
+        species: list = [],  # Species to include in the dataset (example: ["Wheat","Maize"])
         system: list = [],  # System used to acquire the images (options: "Handeld cameras", "DHP","IOT", "UAV", "Phenomobile" or "Phone Camera")
         orientation: list = [],  # Orientation of the images (options: "Nadir", 45 or "DHP")
-        alltvt: bool = False,  # # Whether to use all images for training/validation/test
+        alltvt: bool = False,  # Whether to use all images for training/validation/test
         preprocess=None,  # Preprocessing function to use when loading the images
     ):
         # Load metadata from a CSV file
@@ -27,7 +27,7 @@ class DatasetVegAnn(BaseDataset):
         # Filter metadata based on the provided parameters
         if alltvt:
             self.metadata = df
-            print(f"selec all data")
+            print(f"Selec all Data")
         else:
             self.metadata = df[df[f"TVT-split{split}"] == tvt]
             print(f"selec TVT-split{split} = {tvt}")
@@ -56,11 +56,13 @@ class DatasetVegAnn(BaseDataset):
         imname = row["Name"]
         image = cv2.imread(str(Path(self.pathin) / "images" / imname))
         image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
-
+        
+        # perform preprocessing 
         if self.preprocess:
             image = self.preprocess(image)
             image = image.astype("float32")
-
+            
+        # performe HWC -> CHW transformation
         image = image.transpose(2, 0, 1)
 
         system = row["System"]
@@ -75,7 +77,7 @@ class DatasetVegAnn(BaseDataset):
             / 255
         )
 
-        # add new axis and performe HWC->CHW transformation
+        # add new axis and perform HWC->CHW transformation
         mask = mask[..., np.newaxis].transpose(2, 0, 1)
 
         return {
@@ -89,6 +91,7 @@ class DatasetVegAnn(BaseDataset):
 
     def __len__(self):
         return len(self.metadata)
-
+    
+    # species return the set of crop species that are in the dataset
     def species(self):
         return self.metadata["Species"].unique().tolist()
