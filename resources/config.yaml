@@ -1,14 +1,15 @@
 expt_dir: "./expts/DeepLabV3"
 
+# Parameter to 
 dataset: 
-  VegAnn_path: "/home/kaaviyavelumani/Documents/codes/personal/VegAnn/data/VegAnn_dataset"
-  n_split: 5
-  species: 
-  system: "Handheld cameras" #(options: "Handeld cameras", "DHP","IOT", "UAV", "Phenomobile" or "Phone Camera")
-  orientation: Nadir  # Orientation of the images (options: "Nadir", 45 or "DHP")
-  alltvt: False
+  VegAnn_path: "/home/data/VegAnn_dataset" # specify directory of the dataset (lcoation of images and annotations folder with VegAnn_dataset.csv) 
+  n_split: 1  # Specify the split use for Training Validation or Test (integer between 1 or 5)
+  species: # Species to include in the dataset (example: ["Wheat","Maize"])
+  system: # System used to acquire the images (options: "Handeld cameras", "DHP","IOT", "UAV", "Phenomobile" or "Phone Camera")
+  orientation:  # Orientation of the images (options: "Nadir", 45 or "DHP")
+  alltvt: False # Whether to use all images (Training/Validation/Test) for Training
 
-
+# Training configuration 
 training:
   batch_size: 16
   max_epochs: 15
