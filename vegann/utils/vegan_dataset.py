@@ -16,7 +16,7 @@ class DatasetVegAnn(BaseDataset):
         species: list = [],  # Species to include in the dataset (example: ["Wheat","Maize"])
         system: list = [],  # System used to acquire the images (options: "Handeld cameras", "DHP","IOT", "UAV", "Phenomobile" or "Phone Camera")
         orientation: list = [],  # Orientation of the images (options: "Nadir", 45 or "DHP")
-        alltvt: bool = False,  # Whether to use all images for training/validation/test
+        alltvt: bool = False, # Whether to use all images (Training/Validation/Test) for Training
         preprocess=None,  # Preprocessing function to use when loading the images
     ):
         # Load metadata from a CSV file
