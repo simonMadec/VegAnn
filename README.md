@@ -3,6 +3,7 @@
 # VegAnn 
 ![Alt text](images/vegann-logo.png "Vegann-logo")
 
+# NEWS! : The dataset is now on HuggingFace : https://huggingface.co/datasets/simonMadec/VegAnn
 ### **Vegetation Annotation of a large multi-crop RGB Dataset acquired under diverse conditions for image semantic segmentation**
 
 # Table of contents
@@ -19,8 +20,7 @@
 11. [Credits](#credits)
 
 ## ⏳ Keypoints <a name="key"></a>
-
-- The dataset can be accessed at https://doi.org/10.5281/zenodo.7636408.
+- The dataset can be accessed on Hugging face : https://huggingface.co/datasets/simonMadec/VegAnn and Zenodo https://doi.org/10.5281/zenodo.7636408.
 - VegAnn contains 3775 images 
 - Images are 512*512 pixels 
 - Corresponding binary masks is 0 for soil + crop residues (background) 255 for Vegetation (foreground)
